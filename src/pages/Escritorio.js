@@ -1,15 +1,25 @@
-import React from 'react'
+import React, {useState} from 'react'
 import { Row, Col, Typography, Button, Divider } from 'antd';
 import {
     CloseCircleOutlined ,
     RightOutlined 
   } from '@ant-design/icons';
+import useHideMenu from '../hooks/useHideMenu';
+import { getUsuarioStorage } from '../helpers/getUsuarioStorage';
+import { useNavigate } from 'react-router-dom';
 
 const { Title, Text } = Typography;
 
 export const Escritorio = () => {
+    
+    useHideMenu(false); 
+    const navegate = useNavigate();
+    const [usuario] = useState( getUsuarioStorage() );
 
     const salir = () => {
+        localStorage.removeItem("agente");
+        localStorage.removeItem('escritorio');
+        navegate("/ingresar");
         console.log("saliendo");
     }
 
@@ -17,14 +27,19 @@ export const Escritorio = () => {
         console.log("siguiente ticket");
     }
 
+    if(!usuario.agente || !usuario.escritorio) {
+        console.log("pasa");
+        navegate("/ingresar"); 
+      }
+
     return (
         <>
 
             <Row>
                 <Col span={ 20 }>
-                    <Title level={ 2 }>Fernando</Title>
+                    <Title level={ 2 }>{ usuario.agente}</Title>
                     <Text>Usted está trabajando en el escritorio: </Text>
-                    <Text type="success">5</Text>
+                    <Text type="success">{usuario.escritorio}</Text>
                 </Col>
                 <Col span={4} align="right">
                     <Button 

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 
 import { Layout, Menu } from 'antd';
 import {
@@ -19,10 +19,13 @@ import { Ingresar } from './Ingresar';
 import { Cola } from './Cola';
 import { CreatTicket } from './CreatTicket';
 import { Escritorio } from './Escritorio';
+import { UIContext } from '../context/UIContext';
 
 const { Sider, Content } = Layout;
 
 export const RouterPage = () => {
+
+    const { ocultarMenu } =  useContext( UIContext )
     return (
 
        <Router>
@@ -30,6 +33,7 @@ export const RouterPage = () => {
                 <Sider 
                     collapsedWidth="0"   
                     breakpoint="md"
+                    hidden={ ocultarMenu }
                 >
                 <div className="logo" />
                 <Menu theme="dark" mode="inline" defaultSelectedKeys={['1']}>
