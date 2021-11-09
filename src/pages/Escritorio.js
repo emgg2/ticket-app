@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, useContext} from 'react'
 import { Row, Col, Typography, Button, Divider } from 'antd';
 import {
     CloseCircleOutlined ,
@@ -7,6 +7,7 @@ import {
 import useHideMenu from '../hooks/useHideMenu';
 import { getUsuarioStorage } from '../helpers/getUsuarioStorage';
 import { useNavigate } from 'react-router-dom';
+import { SocketContext } from '../context/SocketContext';
 
 const { Title, Text } = Typography;
 
@@ -15,6 +16,8 @@ export const Escritorio = () => {
     useHideMenu(false); 
     const navegate = useNavigate();
     const [usuario] = useState( getUsuarioStorage() );
+    const { socket }  = useContext( SocketContext );
+    const [ticket, setTicket] = useState(null)
 
     const salir = () => {
         localStorage.removeItem("agente");
@@ -24,11 +27,12 @@ export const Escritorio = () => {
     }
 
     const siguienteTicket = () => {
-        console.log("siguiente ticket");
+        socket.emit ('siguiente-ticket-trabajar', usuario, ( ticket ) => {
+            setTicket(ticket);
+        }); 
     }
 
     if(!usuario.agente || !usuario.escritorio) {
-        console.log("pasa");
         navegate("/ingresar"); 
       }
 
@@ -54,17 +58,23 @@ export const Escritorio = () => {
             </Row>
             <Divider />
 
-            <Row>
-                <Col>
-                <Text> Está atendiendo el ticket número: </Text>
-                <Text 
-                    style={{ fontSize: 30}} 
-                    type="danger"
-                > 
-                55 
-                </Text>
-                </Col>
-            </Row>
+            {
+                ticket && (
+                    <Row>
+                    <Col>
+                    <Text> Está atendiendo el ticket número: </Text>
+                    <Text 
+                        style={{ fontSize: 30}} 
+                        type="danger"
+                    > 
+                    { ticket.numero } 
+                    </Text>
+                    </Col>
+                </Row>
+
+                )
+            }
+         
 
             <Row>
                 <Col offset={ 18 } span={ 6 } align="right">

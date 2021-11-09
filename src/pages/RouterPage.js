@@ -17,7 +17,7 @@ import {
 
 import { Ingresar } from './Ingresar';
 import { Cola } from './Cola';
-import { CreatTicket } from './CreatTicket';
+import { CrearTicket } from './CrearTicket';
 import { Escritorio } from './Escritorio';
 import { UIContext } from '../context/UIContext';
 
@@ -66,7 +66,7 @@ export const RouterPage = () => {
                     <Routes>                    
                         <Route path="/ingresar" element={ <Ingresar/>} />
                         <Route path="/cola" element={ <Cola /> } />
-                        <Route path="/crear" element={ <CreatTicket/> } />
+                        <Route path="/crear" element={ <CrearTicket/> } />
                         <Route path="/escritorio" element={ <Escritorio/> } />
                         <Route path="*" element={ <Ingresar />} />                        
                     </Routes>
